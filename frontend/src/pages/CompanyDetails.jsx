@@ -21,7 +21,7 @@ const CompanyDetails = () => {
     const fetchCompanyDetails = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`http://localhost:5000/api/companies/${id}`);
+        const res = await axios.get(`/api/companies/${id}`);
         setData(res.data);
       } catch (err) {
         console.error("Error loading company details:", err);

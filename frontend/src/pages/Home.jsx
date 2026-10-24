@@ -67,7 +67,7 @@ const Home = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/companies");
+        const res = await axios.get("/api/companies");
         if (res.data && res.data.length > 0) {
           // Merge API data with frontend display highlights
           const merged = initialCompanies.map((initComp) => {

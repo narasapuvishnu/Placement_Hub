@@ -76,7 +76,7 @@ const ShareExperienceModal = ({ isOpen, onClose, onExperienceSubmitted }) => {
         tags: parsedTags,
       };
 
-      const res = await axios.post("http://localhost:5000/api/experiences", payload, {
+      const res = await axios.post("/api/experiences", payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

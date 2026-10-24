@@ -32,7 +32,7 @@ const PracticeSolve = () => {
       const token = localStorage.getItem("token");
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-      const res = await axios.get(`http://localhost:5000/api/practice/${id}`, { headers });
+      const res = await axios.get(`/api/practice/${id}`, { headers });
       const q = res.data.question;
       setQuestion(q);
       setSelectedOption(null);
@@ -442,7 +442,7 @@ const PracticeSolve = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/practice/${id}/submit`,
+        `/api/practice/${id}/submit`,
         { code, language, status: "Accepted" },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -20,8 +20,9 @@ const Dashboard = () => {
       if (!token) return;
 
       const headers = { Authorization: `Bearer ${token}` };
-      const res = await axios.get("http://localhost:5000/api/dashboard/summary", { headers });
+      const res = await axios.get("/api/dashboard/summary", { headers });
       if (res.data.success) {
+
         setData(res.data.data);
       }
     } catch (err) {

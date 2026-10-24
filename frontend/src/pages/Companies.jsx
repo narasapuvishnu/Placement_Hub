@@ -26,7 +26,7 @@ const Companies = () => {
   const fetchCompanies = async () => {
     try {
       setLoading(true);
-      let url = "http://localhost:5000/api/companies?";
+      let url = "/api/companies?";
       if (difficulty !== "All") url += `difficulty=${difficulty}&`;
       if (industry !== "All") url += `industry=${encodeURIComponent(industry)}&`;
       if (search) url += `search=${encodeURIComponent(search)}`;

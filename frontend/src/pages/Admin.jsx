@@ -61,19 +61,19 @@ const Admin = () => {
     try {
       setLoading(true);
       if (activeTab === "overview") {
-        const res = await axios.get("http://localhost:5000/api/admin/stats", { headers: authHeaders });
+        const res = await axios.get("/api/admin/stats", { headers: authHeaders });
         if (res.data.success) setStats(res.data.data);
       } else if (activeTab === "jobs") {
-        const res = await axios.get("http://localhost:5000/api/admin/jobs", { headers: authHeaders });
+        const res = await axios.get("/api/admin/jobs", { headers: authHeaders });
         if (res.data.success) setJobs(res.data.data);
       } else if (activeTab === "questions") {
-        const res = await axios.get("http://localhost:5000/api/admin/questions", { headers: authHeaders });
+        const res = await axios.get("/api/admin/questions", { headers: authHeaders });
         if (res.data.success) setQuestions(res.data.data);
       } else if (activeTab === "companies") {
-        const res = await axios.get("http://localhost:5000/api/admin/companies", { headers: authHeaders });
+        const res = await axios.get("/api/admin/companies", { headers: authHeaders });
         if (res.data.success) setCompanies(res.data.data);
       } else if (activeTab === "applications") {
-        const res = await axios.get("http://localhost:5000/api/admin/applications", { headers: authHeaders });
+        const res = await axios.get("/api/admin/applications", { headers: authHeaders });
         if (res.data.success) setApplications(res.data.data);
       }
     } catch (err) {
@@ -92,7 +92,7 @@ const Admin = () => {
         ...newJob,
         skillsRequired: newJob.skillsRequired.split(",").map((s) => s.trim()),
       };
-      const res = await axios.post("http://localhost:5000/api/admin/jobs", payload, { headers: authHeaders });
+      const res = await axios.post("/api/admin/jobs", payload, { headers: authHeaders });
       if (res.data.success) {
         setFeedback({ type: "success", message: `Job "${res.data.data.title}" posted successfully!` });
         setNewJob({
@@ -116,7 +116,7 @@ const Admin = () => {
   const handleDeleteJob = async (id) => {
     if (!window.confirm("Are you sure you want to delete this job posting?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/admin/jobs/${id}`, { headers: authHeaders });
+      await axios.delete(`/api/admin/jobs/${id}`, { headers: authHeaders });
       setFeedback({ type: "success", message: "Job deleted successfully." });
       setJobs(jobs.filter((j) => j._id !== id));
     } catch (err) {
@@ -132,7 +132,7 @@ const Admin = () => {
         ...newQuestion,
         companies: newQuestion.companies.split(",").map((c) => c.trim()),
       };
-      const res = await axios.post("http://localhost:5000/api/admin/questions", payload, { headers: authHeaders });
+      const res = await axios.post("/api/admin/questions", payload, { headers: authHeaders });
       if (res.data.success) {
         setFeedback({ type: "success", message: `Question "${res.data.data.title}" added successfully!` });
         setNewQuestion({
@@ -154,7 +154,7 @@ const Admin = () => {
   const handleDeleteQuestion = async (id) => {
     if (!window.confirm("Are you sure you want to delete this practice question?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/admin/questions/${id}`, { headers: authHeaders });
+      await axios.delete(`/api/admin/questions/${id}`, { headers: authHeaders });
       setFeedback({ type: "success", message: "Question deleted successfully." });
       setQuestions(questions.filter((q) => q._id !== id));
     } catch (err) {
@@ -165,7 +165,7 @@ const Admin = () => {
   // Application Status Update
   const handleUpdateApplication = async (id, status) => {
     try {
-      await axios.put(`http://localhost:5000/api/admin/applications/${id}`, { status }, { headers: authHeaders });
+      await axios.put(`/api/admin/applications/${id}`, { status }, { headers: authHeaders });
       setApplications(applications.map((app) => (app._id === id ? { ...app, status } : app)));
       setFeedback({ type: "success", message: `Application status updated to ${status}` });
     } catch (err) {

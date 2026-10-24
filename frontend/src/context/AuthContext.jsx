@@ -7,8 +7,9 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Configure Axios base URL
-  axios.defaults.baseURL = "http://localhost:5000";
+  // Configure Axios base URL dynamically from environment variable for deployment (e.g. Render / Railway)
+  axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
 
   useEffect(() => {
     // Check if user is logged in

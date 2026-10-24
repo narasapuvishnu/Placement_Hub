@@ -40,7 +40,7 @@ const Practice = () => {
       const token = localStorage.getItem("token");
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-      let url = "http://localhost:5000/api/practice?";
+      let url = "/api/practice?";
       if (category !== "All") url += `category=${encodeURIComponent(category)}&`;
       if (category !== "All" && topic !== "All") url += `topic=${encodeURIComponent(topic)}&`;
       if (difficulty !== "All") url += `difficulty=${difficulty}&`;
@@ -60,7 +60,7 @@ const Practice = () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
-      const res = await axios.get("http://localhost:5000/api/practice/stats", {
+      const res = await axios.get("/api/practice/stats", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setStats(res.data);

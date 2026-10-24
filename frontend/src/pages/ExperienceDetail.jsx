@@ -18,7 +18,7 @@ const ExperienceDetail = () => {
   const fetchExperienceDetail = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`http://localhost:5000/api/experiences/${id}`);
+      const res = await axios.get(`/api/experiences/${id}`);
       if (res.data.success) {
         setExperience(res.data.experience);
       }
@@ -39,7 +39,7 @@ const ExperienceDetail = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/experiences/${id}/upvote`,
+        `/api/experiences/${id}/upvote`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

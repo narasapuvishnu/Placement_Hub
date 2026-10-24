@@ -24,7 +24,7 @@ const InterviewExperiences = () => {
   const fetchExperiences = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5000/api/experiences", {
+      const res = await axios.get("/api/experiences", {
         params: {
           search,
           company: selectedCompany,
@@ -56,7 +56,7 @@ const InterviewExperiences = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/experiences/${expId}/upvote`,
+        `/api/experiences/${expId}/upvote`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
