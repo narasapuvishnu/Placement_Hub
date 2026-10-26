@@ -36,22 +36,38 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 
-  // Automated background job aggregation
+  // Background auto-seeding & sync services
   const { syncExternalJobs } = require("./services/jobSyncService");
-  // Run initial sync 5 seconds after server start so DB is ready
-  setTimeout(() => {
-    syncExternalJobs().catch((err) =>
-      console.error("[JobSync] Initial background sync error:", err.message)
-    );
+  const { ensureQuestionsSeeded } = require("./services/practiceSeedService");
+  const { syncInterviewStories } = require("./services/experienceSyncService");
+
+  // Run initial sync 5 seconds after server start so DB is connected
+  setTimeout(async () => {
+    try {
+      console.log("[AutoSync] Performing initial boot data synchronization...");
+      await Promise.allSettled([
+        ensureQuestionsSeeded(),
+        syncInterviewStories(),
+        syncExternalJobs(),
+      ]);
+      console.log("[AutoSync] Initial boot synchronization complete!");
+    } catch (err) {
+      console.error("[AutoSync] Boot sync error:", err.message);
+    }
   }, 5000);
 
   // Auto-update every 6 hours
   const SIX_HOURS_MS = 6 * 60 * 60 * 1000;
-  setInterval(() => {
-    console.log("[JobSync] Running scheduled 6-hour job update...");
-    syncExternalJobs().catch((err) =>
-      console.error("[JobSync] Scheduled sync error:", err.message)
-    );
+  setInterval(async () => {
+    console.log("[AutoSync] Running scheduled 6-hour system sync (Jobs, Stories, Catalog)...");
+    try {
+      await Promise.allSettled([
+        syncExternalJobs(),
+        syncInterviewStories(),
+      ]);
+    } catch (err) {
+      console.error("[AutoSync] Scheduled sync error:", err.message);
+    }
   }, SIX_HOURS_MS);
 });
 

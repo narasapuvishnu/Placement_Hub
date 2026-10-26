@@ -1,12 +1,14 @@
 const Question = require("../models/Question");
 const Submission = require("../models/Submission");
 const User = require("../models/User");
+const { ensureQuestionsSeeded } = require("../services/practiceSeedService");
 
 // @desc    Get all questions with filters & user solve status
 // @route   GET /api/practice
 // @access  Public (Optional auth for solved status)
 exports.getQuestions = async (req, res) => {
   try {
+    await ensureQuestionsSeeded();
     const { category, topic, difficulty, company, search } = req.query;
     let query = {};
 

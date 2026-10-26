@@ -118,7 +118,21 @@ const InterviewExperiences = () => {
     }
   };
 
-  const companiesList = ["All", "Google", "Amazon", "Microsoft", "Uber"];
+  const [syncing, setSyncing] = useState(false);
+
+  const handleSyncStories = async () => {
+    try {
+      setSyncing(true);
+      await axios.get("/api/experiences/sync");
+      await fetchExperiences();
+    } catch (err) {
+      console.error("Error syncing experiences:", err);
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  const companiesList = ["All", "Google", "Amazon", "Microsoft", "Uber", "Meta", "Netflix", "Adobe"];
 
   return (
     <div className="container py-4">
@@ -142,6 +156,20 @@ const InterviewExperiences = () => {
                 onClick={() => setIsModalOpen(true)}
               >
                 + Share Your Experience
+              </button>
+              <button
+                className="btn btn-outline-light btn-lg rounded-pill px-4 fw-semibold"
+                onClick={handleSyncStories}
+                disabled={syncing}
+              >
+                {syncing ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Syncing Latest Stories...
+                  </>
+                ) : (
+                  "🔄 Sync Latest Stories"
+                )}
               </button>
             </div>
           </div>

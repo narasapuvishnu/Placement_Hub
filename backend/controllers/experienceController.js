@@ -1,10 +1,12 @@
 const Experience = require("../models/Experience");
+const { ensureExperiencesSeeded, syncInterviewStories } = require("../services/experienceSyncService");
 
 // @desc    Get all interview experiences with search, filter, and sorting
 // @route   GET /api/experiences
 // @access  Public
 exports.getExperiences = async (req, res) => {
   try {
+    await ensureExperiencesSeeded();
     const { search, company, outcome, difficulty, sort } = req.query;
 
     let query = {};
@@ -192,7 +194,7 @@ exports.deleteExperience = async (req, res) => {
       return res.status(404).json({ msg: "Experience not found" });
     }
 
-    if (experience.user.toString() !== req.user.id && req.user.role !== "admin") {
+    if (experience.user && experience.user.toString() !== req.user.id && req.user.role !== "admin") {
       return res.status(403).json({ msg: "Not authorized to delete this experience" });
     }
 
@@ -205,5 +207,18 @@ exports.deleteExperience = async (req, res) => {
   } catch (err) {
     console.error("Error deleting experience:", err);
     res.status(500).json({ msg: "Server error deleting experience" });
+  }
+};
+
+// @desc    Trigger auto-sync of interview experiences
+// @route   POST /api/experiences/sync
+// @access  Public
+exports.syncStories = async (req, res) => {
+  try {
+    const result = await syncInterviewStories();
+    res.json(result);
+  } catch (err) {
+    console.error("Error triggering experience sync:", err);
+    res.status(500).json({ success: false, msg: "Failed to sync interview experiences" });
   }
 };

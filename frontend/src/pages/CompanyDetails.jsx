@@ -54,7 +54,7 @@ const CompanyDetails = () => {
     );
   }
 
-  const { company, jobs, questions } = data;
+  const { company, jobs, questions, experiences = [] } = data;
 
   const getDifficultyBadge = (level) => {
     switch (level) {
@@ -100,7 +100,7 @@ const CompanyDetails = () => {
       {/* Company Header Card */}
       <div className="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
         <div className="row align-items-center">
-          <div className="col-md-8 d-flex align-items-center gap-4">
+          <div className="col-md-7 d-flex align-items-center gap-4">
             {company.logo ? (
               <div
                 className="bg-white border rounded-3 p-3 d-flex align-items-center justify-content-center shadow-sm"
@@ -148,7 +148,7 @@ const CompanyDetails = () => {
             </div>
           </div>
 
-          <div className="col-md-4 mt-3 mt-md-0 text-md-end">
+          <div className="col-md-5 mt-3 mt-md-0 text-md-end">
             <div className="d-inline-flex gap-2">
               <span className="badge bg-primary-subtle text-primary p-2 px-3 rounded-3 text-start">
                 <div className="fs-5 fw-bold">{company.interviewRounds?.length || 0}</div>
@@ -162,6 +162,10 @@ const CompanyDetails = () => {
                 <div className="fs-5 fw-bold">{jobs?.length || 0}</div>
                 <div className="small">Openings</div>
               </span>
+              <span className="badge bg-warning-subtle text-warning-emphasis p-2 px-3 rounded-3 text-start">
+                <div className="fs-5 fw-bold">{experiences?.length || 0}</div>
+                <div className="small">Stories</div>
+              </span>
             </div>
           </div>
         </div>
@@ -172,9 +176,9 @@ const CompanyDetails = () => {
       </div>
 
       {/* Tabs */}
-      <div className="d-flex border-bottom mb-4">
+      <div className="d-flex border-bottom mb-4 overflow-auto">
         <button
-          className={`btn pb-3 px-4 fw-semibold rounded-0 border-0 ${
+          className={`btn pb-3 px-4 fw-semibold rounded-0 border-0 text-nowrap ${
             activeTab === "rounds"
               ? "text-primary border-bottom border-primary border-3"
               : "text-muted"
@@ -184,7 +188,7 @@ const CompanyDetails = () => {
           🎯 Interview Roadmap ({company.interviewRounds?.length || 0})
         </button>
         <button
-          className={`btn pb-3 px-4 fw-semibold rounded-0 border-0 ${
+          className={`btn pb-3 px-4 fw-semibold rounded-0 border-0 text-nowrap ${
             activeTab === "questions"
               ? "text-primary border-bottom border-primary border-3"
               : "text-muted"
@@ -194,14 +198,24 @@ const CompanyDetails = () => {
           💻 Practice Problems ({questions?.length || 0})
         </button>
         <button
-          className={`btn pb-3 px-4 fw-semibold rounded-0 border-0 ${
+          className={`btn pb-3 px-4 fw-semibold rounded-0 border-0 text-nowrap ${
             activeTab === "jobs"
               ? "text-primary border-bottom border-primary border-3"
               : "text-muted"
           }`}
           onClick={() => setActiveTab("jobs")}
         >
-          💼 Open Positions ({jobs?.length || 0})
+          💼 Off-Campus Openings ({jobs?.length || 0})
+        </button>
+        <button
+          className={`btn pb-3 px-4 fw-semibold rounded-0 border-0 text-nowrap ${
+            activeTab === "stories"
+              ? "text-primary border-bottom border-primary border-3"
+              : "text-muted"
+          }`}
+          onClick={() => setActiveTab("stories")}
+        >
+          🗣️ Interview Stories ({experiences?.length || 0})
         </button>
       </div>
 
@@ -383,6 +397,68 @@ const CompanyDetails = () => {
                       {job.skills?.map((s, i) => (
                         <span key={i} className="badge bg-light text-primary border small">
                           {s}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Tab 4: Interview Stories */}
+      {activeTab === "stories" && (
+        <div>
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h4 className="fw-bold text-dark mb-1">Authentic Interview Stories</h4>
+              <p className="text-muted small mb-0">
+                Round-by-round interview journeys and insider tips from candidate alumni at {company.name}.
+              </p>
+            </div>
+            <Link to="/interview-experiences" className="btn btn-outline-primary btn-sm rounded-pill px-3">
+              Browse All Stories →
+            </Link>
+          </div>
+
+          {experiences?.length === 0 ? (
+            <div className="text-center py-5 bg-white rounded-4 border">
+              <p className="text-muted">No specific interview stories yet for {company.name}.</p>
+              <Link to="/interview-experiences" className="btn btn-primary btn-sm rounded-pill px-4">
+                Share the First Experience
+              </Link>
+            </div>
+          ) : (
+            <div className="row g-3">
+              {experiences.map((exp) => (
+                <div key={exp._id} className="col-12">
+                  <div className="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                    <div className="d-flex justify-content-between align-items-start mb-2">
+                      <div>
+                        <div className="d-flex align-items-center gap-2 mb-1">
+                          <h5 className="fw-bold text-dark mb-0">{exp.title}</h5>
+                          <span className={`badge ${exp.outcome === "Offered" ? "bg-success" : "bg-danger"} rounded-pill`}>
+                            {exp.outcome}
+                          </span>
+                        </div>
+                        <div className="text-muted small">
+                          💼 {exp.role} • 📍 {exp.location} • 📅 Batch {exp.batchYear} • ⏱ {exp.rounds?.length || 0} Rounds
+                        </div>
+                      </div>
+                      <Link
+                        to={`/interview-experiences/${exp._id}`}
+                        className="btn btn-outline-primary btn-sm rounded-pill px-4 fw-semibold"
+                      >
+                        Read Full Story →
+                      </Link>
+                    </div>
+                    <p className="text-secondary small mb-3">{exp.summary}</p>
+                    <div className="d-flex flex-wrap gap-1">
+                      {exp.tags?.map((tag, i) => (
+                        <span key={i} className="badge bg-light text-secondary border small">
+                          #{tag}
                         </span>
                       ))}
                     </div>

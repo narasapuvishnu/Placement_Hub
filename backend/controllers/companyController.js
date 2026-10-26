@@ -251,17 +251,24 @@ exports.getCompanyById = async (req, res) => {
     // Fetch related active jobs for this company
     const jobs = await Job.find({
       company: { $regex: new RegExp(`^${company.name}$`, "i") },
-    });
+    }).sort({ createdAt: -1 });
 
     // Fetch related practice questions tagged with this company
     const questions = await Question.find({
       companies: { $regex: new RegExp(`^${company.name}$`, "i") },
     });
 
+    // Fetch authentic interview stories and experiences for this company
+    const Experience = require("../models/Experience");
+    const experiences = await Experience.find({
+      company: { $regex: new RegExp(`^${company.name}$`, "i") },
+    }).sort({ createdAt: -1 });
+
     res.json({
       company,
       jobs,
       questions,
+      experiences,
     });
   } catch (err) {
     console.error(err.message);
