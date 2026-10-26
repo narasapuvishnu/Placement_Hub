@@ -130,6 +130,50 @@ body {
   background: #f1f5f9;
 }
 
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-top: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  }
+
+  .navbar-nav .nav-item {
+    width: 100%;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 0.6rem 0.5rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-explore-menu {
+    position: static !important;
+    float: none;
+    transform: none !important;
+    margin-top: 0.5rem;
+    background: #0f172a;
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .navbar-explore-menu .dropdown-item strong {
+    color: #f8fafc;
+  }
+
+  .navbar-explore-menu .dropdown-item span {
+    color: #94a3b8;
+  }
+
+  .navbar-explore-menu .dropdown-item:hover,
+  .navbar-explore-menu .dropdown-item:focus {
+    background: #334155;
+  }
+}
+
 .home-hero-section {
   isolation: isolate;
   min-height: calc(100svh - 56px);
