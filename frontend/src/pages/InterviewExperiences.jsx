@@ -132,7 +132,23 @@ const InterviewExperiences = () => {
     }
   };
 
-  const companiesList = ["All", "Google", "Amazon", "Microsoft", "Uber", "Meta", "Netflix", "Adobe"];
+  const companiesList = [
+    "All",
+    "Google",
+    "Amazon",
+    "Microsoft",
+    "Uber",
+    "Meta",
+    "Netflix",
+    "Apple",
+    "Adobe",
+    "Atlassian",
+    "Swiggy",
+    "Razorpay",
+    "Flipkart",
+    "Goldman Sachs",
+    "Oracle",
+  ];
 
   return (
     <div className="container py-4">
